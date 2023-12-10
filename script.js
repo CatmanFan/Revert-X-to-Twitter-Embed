@@ -1,14 +1,13 @@
 // ==UserScript==
 // @name        Revert X to Twitter Embed
-// @namespace   Violentmonkey Scripts
+// @namespace   https://github.com/CatmanFan/Revert-X-to-Twitter-Embed
 // @icon        https://www.iconarchive.com/download/i76545/xenatt/minimalism/App-Twitter.256.png
-// @match       https://platform.twitter.com/embed/Tweet.html
-// @grant       GM_addStyle
-// @version     0.1
 // @author      Mr._Lechkar / CatmanFan
-// @namespace     https://github.com/CatmanFan
-// @run-at      document-start
 // @description Fixes Twitter/X embed by reverting X references back to original Twitter ones.
+// @version     0.1
+// @match       https://platform.twitter.com/embed/Tweet.html
+// @run-at      document-start
+// @grant       GM_addStyle
 // ==/UserScript==
 
 // Original color (copied from Yakisova's X to Twitter userscript)
