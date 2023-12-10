@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        Revert X to Twitter Embed
-// @namespace   https://github.com/CatmanFan/Revert-X-to-Twitter-Embed
+// @namespace   https://github.com/CatmanFan/Revert-X-to-Twitter-Embed/
 // @icon        https://www.iconarchive.com/download/i76545/xenatt/minimalism/App-Twitter.256.png
 // @author      Mr._Lechkar / CatmanFan
 // @description Fixes Twitter/X embed by reverting X references back to original Twitter ones.
