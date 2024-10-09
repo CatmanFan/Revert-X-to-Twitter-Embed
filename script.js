@@ -9,7 +9,7 @@
 // @description    Replaces X references in the Twitter/X embed with the original Twitter ones.
 // @description:fr Modifier les embeds (contenus externes embarqués) de Twitter/X en replaçant les références à X par les originales de Twitter (par exemple, « Poster sur X » devient désormais « Tweeter sur Twitter »).
 // @description:es Reemplazar el logotipo de X y sus otras referencias en los Tweets insertados (embeds) por las originales de Twitter.
-// @version        0.29
+// @version        0.3
 // @match          https://platform.twitter.com/embed/Tweet.html
 // @match          https://platform.x.com/embed/Tweet.html
 // @match          https://platform.twitter.com/embed/index.html
