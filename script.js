@@ -9,18 +9,23 @@
 // @description    Replaces X references in the Twitter/X embed with the original Twitter ones.
 // @description:fr Modifier les embeds (contenus externes embarqués) de Twitter/X en replaçant les références à X par les originales de Twitter (par exemple, « Poster sur X » devient désormais « Tweeter sur Twitter »).
 // @description:es Reemplazar el logotipo de X y sus otras referencias en los Tweets insertados (embeds) por las originales de Twitter.
-// @version        0.3
+// @version        0.34
 // @match          https://platform.twitter.com/embed/Tweet.html
+// @match          https://platform.twitter.com/embed/Tweet.html*
 // @match          https://platform.x.com/embed/Tweet.html
+// @match          https://platform.x.com/embed/Tweet.html*
 // @match          https://platform.twitter.com/embed/index.html
+// @match          https://platform.twitter.com/embed/index.html*
 // @match          https://platform.x.com/embed/index.html
+// @match          https://platform.x.com/embed/index.html*
 // @match          https://syndication.twitter.com/*
 // @match          https://syndication.x.com/*
 // @run-at         document-start
 // @grant          GM_addStyle
-// @downloadURL    https://update.greasyfork.org/scripts/481893/Revert%20X%20to%20Twitter%20Embed.user.js
-// @updateURL      https://update.greasyfork.org/scripts/481893/Revert%20X%20to%20Twitter%20Embed.meta.js
+// @downloadURL https://update.greasyfork.org/scripts/481893/Revert%20X%20Embed%20back%20to%20Twitter%20Embed.user.js
+// @updateURL https://update.greasyfork.org/scripts/481893/Revert%20X%20Embed%20back%20to%20Twitter%20Embed.meta.js
 // ==/UserScript==
+
 
 // Original color (copied from Yakisova's X to Twitter userscript)
 GM_addStyle(`
@@ -83,8 +88,11 @@ function revertString(item) {
 
     // Copy link
     if (string == "Copy link")  { string = "Copy link to post"; }
+    if (string == "Copy link to post")  { string = "Copy link to Tweet"; }
 
     if (string.includes("post"))  { string = string.replace("post", "Tweet"); }
+    if (string.includes("Post"))  { string = string.replace("Post", "Tweet"); }
+    if (string.includes("&nbsp;X"))    { string = string.replace("&nbsp;X", "&nbsp;Twitter"); }
     if (string.includes(" X"))    { string = string.replace(" X", " Twitter"); }
 
     return string;
@@ -94,14 +102,16 @@ function revertXLogo() {
   SVG = document.getElementsByClassName("r-18jsvk2 r-4qtqp9 r-yyyyoo r-dnmrzs r-bnwqim r-1plcrui r-lrvibr")[0].querySelector('g').querySelector('path');
   SVG.setAttribute('d', birdPath);
 
-  SVG = document.getElementsByClassName("r-jwli3a r-4qtqp9 r-yyyyoo r-z80fyv r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-19wmn03")[2].querySelector('g').querySelector('path');
-  SVG.setAttribute('d', birdPath);
-
   SVG = document.getElementsByClassName("r-jwli3a r-4qtqp9 r-yyyyoo r-1yevf0r r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-meisx5")[2].querySelector('g').querySelector('path');
   SVG.setAttribute('d', birdPath);
 
   SVG = document.getElementsByClassName("css-901oao r-1awozwy r-jwli3a r-6koalj r-18u37iz r-16y2uox r-1qd0xha r-1b43r93 r-b88u0q r-1777fci r-hjklzo r-bcqeeo r-q4m81j r-qvutc0")[0];
   SVG.getElementsByClassName("r-jwli3a r-4qtqp9 r-yyyyoo r-1yevf0r r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-meisx5")[0].querySelector('g').querySelector('path').setAttribute('d', birdPath);
+}
+
+function revertXLogoEmbed() {
+  SVG1 = document.getElementsByClassName("r-jwli3a r-4qtqp9 r-yyyyoo r-z80fyv r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-19wmn03")[2].querySelector('g').querySelector('path');
+  SVG1.setAttribute('d', birdPath);
 }
 
 function revertHover() {
@@ -153,6 +163,29 @@ function revertStrings() {
     if (item) { item.innerHTML = revertString(item.innerHTML); }
   }
 
+  // "Context is written by people who use X, and appears when rated helpful by others."
+  items = document.getElementsByClassName("css-901oao r-14j79pv r-1qd0xha r-1enofrn r-16dba41 r-fxxt2n r-bcqeeo r-kmv1fd r-qvutc0");
+
+  for (itemX of items) {
+    item = itemX.getElementsByClassName("css-901oao css-16my406 r-poiln3 r-bcqeeo r-qvutc0")[0];
+    if (item) { item.innerHTML = revertString(item.innerHTML); }
+
+    var items1 = itemX.getElementsByClassName("css-901oao css-16my406 r-poiln3 r-bcqeeo r-qvutc0");
+    for (itemX1 of items1) {
+      item = itemX.getElementsByClassName("css-901oao css-16my406 r-poiln3 r-bcqeeo r-qvutc0")[0];
+      if (item) { item.innerHTML = revertString(item.innerHTML); }
+    }
+  }
+
+  // "Some or all of the content shared in this Post is disputed and might be misleading about an election or other civic process."
+  items = document.getElementsByClassName("css-901oao r-1qd0xha r-a023e6 r-16dba41 r-rjixqe r-bcqeeo r-qvutc0");
+
+  for (itemX of items) {
+    item = itemX.getElementsByClassName("css-901oao css-16my406 r-poiln3 r-bcqeeo r-qvutc0")[0];
+    if (item) { item.innerHTML = revertString(item.innerHTML); }
+  }
+
+
   // Same for Accessibility Labels
   // NOTE: Not fully working at the present moment
   /* items = document.querySelectorAll('body *');
@@ -179,6 +212,7 @@ function deleteNotFound()
 }
 
 setInterval(revertXLogo, 1);
+setInterval(revertXLogoEmbed, 1);
 setInterval(revertHover, 1);
 setInterval(revertStrings, 1);
 setInterval(deleteNotFound, 1);
